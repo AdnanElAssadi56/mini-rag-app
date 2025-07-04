@@ -25,6 +25,8 @@ class CoHereProvider(LLMInterface):
 
         self.logger = logging.getLogger(__name__)
 
+        self.enums = CoHereEnums
+
     def set_generation_model(self, model_id: str):
         self.generation_model_id = model_id
 
