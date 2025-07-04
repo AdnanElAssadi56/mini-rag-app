@@ -10,3 +10,7 @@ motor==3.7.1
 pydantic-mongo==2.3.0
 openai==1.35.13
 cohere==5.5.8
+qdrant-client==1.10.1
+torch>=2.0             
+transformers>=4.30     
+sentence-transformers  
