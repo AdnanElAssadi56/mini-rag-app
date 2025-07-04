@@ -64,3 +64,4 @@ class ProjectModel(BaseDataModel):
             )
 
         return projects, total_pages
+    
