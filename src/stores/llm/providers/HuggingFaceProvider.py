@@ -3,6 +3,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from sentence_transformers import SentenceTransformer
 import torch
 import logging
+from typing import Union, List
 
 class HuggingFaceProvider(LLMInterface):
     def __init__(
@@ -99,15 +100,18 @@ class HuggingFaceProvider(LLMInterface):
         # Optionally trim to only generated beyond prompt
         return decoded
 
-    def embed_text(self, text: str, document_type: str = None) -> list:
+    def embed_text(self, text: Union[str, List[str]], document_type: str = None) -> list:
         """
         Compute embedding for the given text using the sentence-transformers model.
         """
         if not self.embedding_model:
             self.logger.error("Embedding model not set")
             return None
+        
+        if isinstance(text, str):
+            text = [text]
 
-        processed = self.process_text(text)
+        processed = [self.process_text(t) for t in text]
         embeddings = self.embedding_model.encode(
             processed,
             convert_to_numpy=True
@@ -118,5 +122,5 @@ class HuggingFaceProvider(LLMInterface):
         """Wrap prompt and role into the standard message dict."""
         return {
             "role": role,
-            "content": self.process_text(prompt)
+            "content": prompt
         }
